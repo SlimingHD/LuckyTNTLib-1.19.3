@@ -28,6 +28,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.RegistryObject;
 
@@ -84,13 +85,6 @@ public class LTNTMinecart extends Minecart implements IExplosiveEntity{
 	
 	@Override
 	public boolean hurt(DamageSource source, float amount) {
-<<<<<<< Updated upstream
-		Entity entity = source.getDirectEntity();
-		if (entity instanceof AbstractArrow abstractarrow) {
-			if (abstractarrow.isOnFire() && getTNTFuse() < 0) {
-				fuse();
-			}
-=======
 		if (!level().isClientSide() && !isRemoved()) {
 			Entity entity = source.getDirectEntity();
 			if (entity instanceof AbstractArrow abstractarrow) {
@@ -123,12 +117,7 @@ public class LTNTMinecart extends Minecart implements IExplosiveEntity{
 			}
 		} else {
 			return true;
->>>>>>> Stashed changes
 		}
-		if(source.is(DamageTypes.LIGHTNING_BOLT) && getTNTFuse() >= 0) {
-			return false;
-		}
-		return super.hurt(source, amount);
 	}
 	
 	@Override
