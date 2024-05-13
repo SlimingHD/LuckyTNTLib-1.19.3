@@ -48,7 +48,7 @@ public abstract class PrimedTNTEffect{
 			if(entity.getTNTFuse() <= 0) {
 				if(entity.getLevel() instanceof ServerLevel) {
 					if(playsSound()) {
-						level.playSound((Entity)entity, new BlockPos(toBlockPos(entity.getPos())), SoundEvents.GENERIC_EXPLODE, SoundSource.BLOCKS, 4f, (1f + (level.random.nextFloat() - level.random.nextFloat()) * 0.2f) * 0.7f);
+						level.playSound((Entity)entity, new BlockPos(toBlockPos(entity.getPos())), SoundEvents.GENERIC_EXPLODE.get(), SoundSource.BLOCKS, 4f, (1f + (level.random.nextFloat() - level.random.nextFloat()) * 0.2f) * 0.7f);
 					}
 					serverExplosion(entity);
 				}
@@ -61,14 +61,14 @@ public abstract class PrimedTNTEffect{
 		 * Default logic implementation for Explosive Projectiles
 		 */
 		else if(entity instanceof LExplosiveProjectile ent) {
-			if((ent.inGround() || ent.hitEntity()) && entity.getLevel() instanceof ServerLevel sLevel) {
+			if((ent.inGround() || ent.hitEntity()) && entity.getLevel() instanceof ServerLevel) {
 				if(explodesOnImpact()) {
 					ent.setTNTFuse(0);
 				}
 				if(ent.getTNTFuse() == 0) {
 					if(ent.level() instanceof ServerLevel) {
 						if(playsSound()) {
-							level.playSound((Entity)entity, new BlockPos(toBlockPos(entity.getPos())), SoundEvents.GENERIC_EXPLODE, SoundSource.BLOCKS, 4f, (1f + (level.random.nextFloat() - level.random.nextFloat()) * 0.2f) * 0.7f);
+							level.playSound((Entity)entity, new BlockPos(toBlockPos(entity.getPos())), SoundEvents.GENERIC_EXPLODE.get(), SoundSource.BLOCKS, 4f, (1f + (level.random.nextFloat() - level.random.nextFloat()) * 0.2f) * 0.7f);
 						}
 						serverExplosion(entity);
 					}
@@ -78,7 +78,7 @@ public abstract class PrimedTNTEffect{
 			else if(airFuse() && entity.getTNTFuse() == 0) {
 				if(ent.level() instanceof ServerLevel) {
 					if(playsSound()) {
-						level.playSound((Entity)entity, new BlockPos(toBlockPos(entity.getPos())), SoundEvents.GENERIC_EXPLODE, SoundSource.BLOCKS, 4f, (1f + (level.random.nextFloat() - level.random.nextFloat()) * 0.2f) * 0.7f);
+						level.playSound((Entity)entity, new BlockPos(toBlockPos(entity.getPos())), SoundEvents.GENERIC_EXPLODE.get(), SoundSource.BLOCKS, 4f, (1f + (level.random.nextFloat() - level.random.nextFloat()) * 0.2f) * 0.7f);
 					}
 					serverExplosion(entity);
 				}

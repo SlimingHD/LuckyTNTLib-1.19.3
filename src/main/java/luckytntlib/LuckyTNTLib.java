@@ -16,6 +16,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Position;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.dispenser.BlockSource;
 import net.minecraft.core.dispenser.DefaultDispenseItemBehavior;
 import net.minecraft.core.dispenser.DispenseItemBehavior;
@@ -124,7 +125,7 @@ public class LuckyTNTLib
 					}
 
 					LTNTMinecart cart = item.createMinecart(level, x, y + railHeight, z, null);
-					if (stack.hasCustomHoverName()) {
+					if (stack.has(DataComponents.CUSTOM_NAME) && !stack.get(DataComponents.CUSTOM_NAME).getString().equals("")) {
 						cart.setCustomName(stack.getHoverName());
 					}
 					stack.shrink(1);

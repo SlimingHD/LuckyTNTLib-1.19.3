@@ -72,9 +72,9 @@ public class LExplosiveProjectile extends AbstractArrow implements IExplosiveEnt
 	}
 	
 	@Override
-	public void defineSynchedData() {
-		entityData.define(DATA_FUSE_ID, -1);
-		super.defineSynchedData();
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		builder.define(DATA_FUSE_ID, -1);
+		super.defineSynchedData(builder);
 	}
 	
 	@Override
@@ -175,5 +175,10 @@ public class LExplosiveProjectile extends AbstractArrow implements IExplosiveEnt
 	@Override
 	public LivingEntity owner() {
 		return getOwner();
+	}
+
+	@Override
+	protected ItemStack getDefaultPickupItem() {
+		return effect.getItemStack();
 	}
 }

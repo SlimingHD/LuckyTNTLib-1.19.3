@@ -84,11 +84,46 @@ public class LTNTMinecart extends Minecart implements IExplosiveEntity{
 	
 	@Override
 	public boolean hurt(DamageSource source, float amount) {
+<<<<<<< Updated upstream
 		Entity entity = source.getDirectEntity();
 		if (entity instanceof AbstractArrow abstractarrow) {
 			if (abstractarrow.isOnFire() && getTNTFuse() < 0) {
 				fuse();
 			}
+=======
+		if (!level().isClientSide() && !isRemoved()) {
+			Entity entity = source.getDirectEntity();
+			if (entity instanceof AbstractArrow abstractarrow) {
+				if (abstractarrow.isOnFire() && getTNTFuse() < 0) {
+					fuse();
+				}
+			}
+			if(source.is(DamageTypes.LIGHTNING_BOLT) && getTNTFuse() >= 0) {
+				return false;
+			}
+			if (this.isInvulnerableTo(source)) {
+				return false;
+			} else {
+				setHurtDir(-getHurtDir());
+				setHurtTime(10);
+				markHurt();
+				setDamage(getDamage() + amount * 10.0F);
+				gameEvent(GameEvent.ENTITY_DAMAGE, source.getEntity());
+				boolean flag = source.getEntity() instanceof Player && ((Player) source.getEntity()).getAbilities().instabuild;
+				if (flag || getDamage() > 40.0F) {
+					this.ejectPassengers();
+					if (flag && !hasCustomName()) {
+						this.discard();
+					} else {
+						destroy(source);
+					}
+				}
+
+				return true;
+			}
+		} else {
+			return true;
+>>>>>>> Stashed changes
 		}
 		if(source.is(DamageTypes.LIGHTNING_BOLT) && getTNTFuse() >= 0) {
 			return false;
@@ -143,9 +178,9 @@ public class LTNTMinecart extends Minecart implements IExplosiveEntity{
 	}
 	
 	@Override
-	public void defineSynchedData() {
-		entityData.define(DATA_FUSE_ID, -1);
-		super.defineSynchedData();
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		builder.define(DATA_FUSE_ID, -1);
+		super.defineSynchedData(builder);
 	}
 	
 	@Nullable
