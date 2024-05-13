@@ -85,7 +85,7 @@ public class LTNTMinecart extends Minecart implements IExplosiveEntity{
 	
 	@Override
 	public boolean hurt(DamageSource source, float amount) {
-		if (!this.level().isClientSide && !this.isRemoved()) {
+		if (!level().isClientSide() && !this.isRemoved()) {
 			Entity entity = source.getDirectEntity();
 			if (entity instanceof AbstractArrow abstractarrow) {
 				if (abstractarrow.isOnFire() && getTNTFuse() < 0) {
