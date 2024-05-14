@@ -85,7 +85,7 @@ public class LTNTMinecart extends Minecart implements IExplosiveEntity{
 	
 	@Override
 	public boolean hurt(DamageSource source, float amount) {
-		if (!this.level().isClientSide && !this.isRemoved()) {
+		if (!level().isClientSide() && !isRemoved()) {
 			Entity entity = source.getDirectEntity();
 			if (entity instanceof AbstractArrow abstractarrow) {
 				if (abstractarrow.isOnFire() && getTNTFuse() < 0) {
@@ -95,21 +95,20 @@ public class LTNTMinecart extends Minecart implements IExplosiveEntity{
 			if(source.is(DamageTypes.LIGHTNING_BOLT) && getTNTFuse() >= 0) {
 				return false;
 			}
-			if (this.isInvulnerableTo(source)) {
+			if (isInvulnerableTo(source)) {
 				return false;
 			} else {
-				this.setHurtDir(-this.getHurtDir());
-				this.setHurtTime(10);
-				this.markHurt();
-				this.setDamage(this.getDamage() + amount * 10.0F);
-				this.gameEvent(GameEvent.ENTITY_DAMAGE, source.getEntity());
+				setHurtDir(-getHurtDir());
+				setHurtTime(10);
+				markHurt();
+				setDamage(getDamage() + amount * 10.0F);
+				gameEvent(GameEvent.ENTITY_DAMAGE, source.getEntity());
 				boolean flag = source.getEntity() instanceof Player && ((Player) source.getEntity()).getAbilities().instabuild;
-				if (flag || this.getDamage() > 40.0F) {
-					this.ejectPassengers();
-					if (flag && !this.hasCustomName()) {
-						this.discard();
+				if (flag || getDamage() > 40.0F) {
+					ejectPassengers();
+					if (flag && !hasCustomName()) {
+						discard();
 					} else {
-						this.destroy(source);
 					}
 				}
 
