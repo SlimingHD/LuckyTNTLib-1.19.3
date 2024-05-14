@@ -19,7 +19,7 @@ minecraft {
 
     mappings channel: mapping_channel, version: mapping_version
     
-    reobf = false
+    reobf = true
     copyIdeResources = true
 
     runs {
