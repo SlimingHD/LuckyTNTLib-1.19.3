@@ -542,6 +542,7 @@ public class RegistryHelper {
 	 * @return {@link RegistryObject} of an {@link EntityType} of a {@link LExplosiveProjectile}
 	 */
 	public RegistryObject<EntityType<LExplosiveProjectile>> registerExplosiveProjectile(DeferredRegister<EntityType<?>> entityRegistry, String registryName, PrimedTNTEffect effect, float size, boolean fireImmune){
+		System.out.println(registryName + ": " + effect == null);
 		if(fireImmune) {
 			return entityRegistry.register(registryName, () -> EntityType.Builder.<LExplosiveProjectile>of((EntityType<LExplosiveProjectile> type, Level level) -> new LExplosiveProjectile(type, level, effect), MobCategory.MISC).setShouldReceiveVelocityUpdates(true).setTrackingRange(64).fireImmune().sized(size, size).build(registryName));
 		}
