@@ -95,7 +95,7 @@ public class LTNTMinecart extends Minecart implements IExplosiveEntity{
 			if(source.is(DamageTypes.LIGHTNING_BOLT) && getTNTFuse() >= 0) {
 				return false;
 			}
-			if (this.isInvulnerableTo(source)) {
+			if (isInvulnerableTo(source)) {
 				return false;
 			} else {
 				setHurtDir(-getHurtDir());
@@ -105,11 +105,10 @@ public class LTNTMinecart extends Minecart implements IExplosiveEntity{
 				gameEvent(GameEvent.ENTITY_DAMAGE, source.getEntity());
 				boolean flag = source.getEntity() instanceof Player && ((Player) source.getEntity()).getAbilities().instabuild;
 				if (flag || getDamage() > 40.0F) {
-					this.ejectPassengers();
+					ejectPassengers();
 					if (flag && !hasCustomName()) {
-						this.discard();
+						discard();
 					} else {
-						destroy(source);
 					}
 				}
 
@@ -167,7 +166,7 @@ public class LTNTMinecart extends Minecart implements IExplosiveEntity{
 	}
 	
 	@Override
-	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+	public void defineSynchedData(SynchedEntityData.Builder builder) {
 		builder.define(DATA_FUSE_ID, -1);
 		super.defineSynchedData(builder);
 	}

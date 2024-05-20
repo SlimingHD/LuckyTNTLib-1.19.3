@@ -59,8 +59,7 @@ public class LExplosiveProjectile extends AbstractArrow implements IExplosiveEnt
 			if(!(player.isCreative() || player.isSpectator())) {
 				hitEntity = true;
 			}
-		}
-		else {
+		} else {
 			hitEntity = true;
 		}
 	}
@@ -72,7 +71,7 @@ public class LExplosiveProjectile extends AbstractArrow implements IExplosiveEnt
 	}
 	
 	@Override
-	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+	public void defineSynchedData(SynchedEntityData.Builder builder) {
 		builder.define(DATA_FUSE_ID, -1);
 		super.defineSynchedData(builder);
 	}
@@ -179,6 +178,6 @@ public class LExplosiveProjectile extends AbstractArrow implements IExplosiveEnt
 
 	@Override
 	protected ItemStack getDefaultPickupItem() {
-		return effect.getItemStack();
+		return getItem();
 	}
 }

@@ -128,7 +128,7 @@ public class ImprovedExplosion extends Explosion{
 		this.posY = y;
 		this.posZ = z;
 		this.size = size;
-		this.damageSource = source;
+		this.damageSource = source == null ? level.damageSources().explosion(this) : source;
 		damageCalculator = explodingEntity == null ? new ExplosionDamageCalculator() : new EntityBasedExplosionDamageCalculator(explodingEntity);
 	}
 	
@@ -145,13 +145,13 @@ public class ImprovedExplosion extends Explosion{
 	 * @param size  the rough size of the explosion, which must not be greater than 511 in most cases
 	 */	
 	public ImprovedExplosion(Level level, @Nullable Entity explodingEntity, @Nullable DamageSource source, SoundEvent sound, double x, double y, double z, int size) {
-		super(level, explodingEntity, source, null, x, y, z, (float)size, false, BlockInteraction.KEEP, ParticleTypes.EXPLOSION, ParticleTypes.EXPLOSION_EMITTER, BuiltInRegistries.SOUND_EVENT.wrapAsHolder(sound));
+		super(level, explodingEntity, source, null, x, y, z, size, false, BlockInteraction.KEEP, ParticleTypes.EXPLOSION, ParticleTypes.EXPLOSION_EMITTER, BuiltInRegistries.SOUND_EVENT.wrapAsHolder(sound));
 		this.level = level;
 		this.posX = x;
 		this.posY = y;
 		this.posZ = z;
 		this.size = size;
-		this.damageSource = source;
+		this.damageSource = source == null ? level.damageSources().explosion(this) : source;
 		damageCalculator = explodingEntity == null ? new ExplosionDamageCalculator() : new EntityBasedExplosionDamageCalculator(explodingEntity);
 	}
 	
