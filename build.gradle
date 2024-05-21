@@ -4,7 +4,7 @@ plugins {
     id 'net.minecraftforge.gradle' version '5.1.+'
 }
 
-version = '43.2.11.4'
+version = '43.3.13.0'
 group = 'libs.luckytntlib'
 archivesBaseName = 'luckytntlib-1.19.2'
 
@@ -89,7 +89,7 @@ repositories {
 
 dependencies {
 
-    minecraft 'net.minecraftforge:forge:1.19.2-43.2.11'
+    minecraft 'net.minecraftforge:forge:1.19.2-43.3.13'
 
 }
 

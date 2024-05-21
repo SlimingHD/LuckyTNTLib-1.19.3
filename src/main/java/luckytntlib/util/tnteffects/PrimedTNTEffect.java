@@ -58,7 +58,7 @@ public abstract class PrimedTNTEffect{
 		 * Default logic implementation for Explosive Projectiles
 		 */
 		else if(entity instanceof LExplosiveProjectile ent) {
-			if((ent.inGround() || ent.hitEntity()) && entity.level() instanceof ServerLevel sLevel) {
+			if((ent.inGround() || ent.hitEntity()) && entity.level() instanceof ServerLevel) {
 				if(explodesOnImpact()) {
 					ent.setTNTFuse(0);
 				}
