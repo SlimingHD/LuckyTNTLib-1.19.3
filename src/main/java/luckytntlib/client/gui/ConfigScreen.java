@@ -3,12 +3,14 @@ package luckytntlib.client.gui;
 import luckytntlib.config.LuckyTNTLibConfigValues;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.StringWidget;
+import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.layouts.GridLayout;
 import net.minecraft.client.gui.layouts.GridLayout.RowHelper;
 import net.minecraft.client.gui.layouts.HeaderAndFooterLayout;
 import net.minecraft.client.gui.layouts.LayoutSettings;
 import net.minecraft.client.gui.layouts.LinearLayout;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraftforge.client.gui.widget.ForgeSlider;
 import net.minecraftforge.common.ForgeConfigSpec;
@@ -37,15 +39,17 @@ public class ConfigScreen extends Screen{
 		
 		grid.defaultCellSetting().paddingHorizontal(4).paddingBottom(4).alignHorizontallyCenter();
 		RowHelper rows = grid.createRowHelper(3);
-		rows.addChild(performant_explosion = new Button.Builder(LuckyTNTLibConfigValues.PERFORMANT_EXPLOSION.get().booleanValue() ? Component.translatable("config.true") : Component.translatable("config.false"), button -> nextBooleanValue(LuckyTNTLibConfigValues.PERFORMANT_EXPLOSION, button)).build());
+		rows.addChild(performant_explosion = new Button.Builder(LuckyTNTLibConfigValues.PERFORMANT_EXPLOSION.get().booleanValue() ? CommonComponents.OPTION_ON : CommonComponents.OPTION_OFF, button -> nextBooleanValue(LuckyTNTLibConfigValues.PERFORMANT_EXPLOSION, button)).build());
+		performant_explosion.setTooltip(Tooltip.create(Component.translatable("config.performant_explosion_tooltip")));
 		rows.addChild(new CenteredStringWidget(Component.translatable("config.performant_explosion"), font));
 		rows.addChild(new Button.Builder(Component.translatable("config.reset"), button -> resetBooleanValue(LuckyTNTLibConfigValues.PERFORMANT_EXPLOSION)).build());
 		rows.addChild(explosion_performance_factor_slider = new ForgeSlider(0, 0, 150, 20, Component.empty(), Component.empty(), 30d, 60d, LuckyTNTLibConfigValues.EXPLOSION_PERFORMANCE_FACTOR.get() * 100, true));
+		explosion_performance_factor_slider.setTooltip(Tooltip.create(Component.translatable("config.explosion_performance_factor_tooltip")));
 		rows.addChild(new CenteredStringWidget(Component.translatable("config.explosion_performance_factor"), font));
 		rows.addChild(new Button.Builder(Component.translatable("config.reset"), button -> resetDoubleValue(LuckyTNTLibConfigValues.EXPLOSION_PERFORMANCE_FACTOR, explosion_performance_factor_slider)).build());
 		
 		layout.addToContents(grid);
-		layout.addToFooter(new Button.Builder(Component.translatable("config.done"), button -> onClose()).build());
+		layout.addToFooter(new Button.Builder(CommonComponents.GUI_DONE, button -> onClose()).build());
 		layout.visitWidgets(this::addRenderableWidget);
 		repositionElements();
 	}
@@ -80,6 +84,6 @@ public class ConfigScreen extends Screen{
 			value = true;
 		}
 		config.set(value);
-		button.setMessage(value ? Component.literal("True") : Component.literal("False"));
+		button.setMessage(value ? CommonComponents.OPTION_ON : CommonComponents.OPTION_OFF);
 	}
 }
