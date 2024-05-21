@@ -1,19 +1,21 @@
 package luckytntlib.client.gui;
 
 import luckytntlib.config.LuckyTNTLibConfigValues;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.components.Tooltip;
+import net.minecraft.client.gui.components.StringWidget;
+import net.minecraft.client.gui.layouts.GridLayout;
+import net.minecraft.client.gui.layouts.GridLayout.RowHelper;
+import net.minecraft.client.gui.layouts.HeaderAndFooterLayout;
+import net.minecraft.client.gui.layouts.LayoutSettings;
+import net.minecraft.client.gui.layouts.LinearLayout;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.contents.PlainTextContents.LiteralContents;
 import net.minecraftforge.client.gui.widget.ForgeSlider;
 import net.minecraftforge.common.ForgeConfigSpec;
 
 /**
  * The config screen of Lucky TNT Lib.
- * Extending this is not advised.
+ * Extending this is not advised. :)
  */
 public class ConfigScreen extends Screen{
 
@@ -21,28 +23,37 @@ public class ConfigScreen extends Screen{
 	
 	ForgeSlider explosion_performance_factor_slider = null;
 	
+	HeaderAndFooterLayout layout = new HeaderAndFooterLayout(this, 20, 40);
+	
 	public ConfigScreen() {
-		super(Component.literal("Lucky TNT Lib Config"));
+		super(Component.translatable("config.title"));
 	}
 
 	@Override
 	public void init() {
-		float scale = minecraft.options.guiScale().get() == 0 ? minecraft.getWindow().calculateScale(0, minecraft.isEnforceUnicode()) * 1.5f : minecraft.options.guiScale().get() * 1.5f;
-		float normalSize = minecraft.getWindow().calculateScale(0, minecraft.isEnforceUnicode()) - 1f;
-		addRenderableWidget(new Button.Builder(Component.literal("Done"), button -> onClose()).bounds((width - (int)(100 * (normalSize / (float)scale))) / 2, height - 30, (int)(100 * (normalSize / (float)scale)), 20).build());
-		addRenderableWidget(performant_explosion = new Button.Builder(LuckyTNTLibConfigValues.PERFORMANT_EXPLOSION.get().booleanValue() ? Component.literal("True") : Component.literal("False"), button -> nextBooleanValue(LuckyTNTLibConfigValues.PERFORMANT_EXPLOSION, performant_explosion)).bounds(20, 40, (int)(200 * (normalSize / (float)scale)), 20).tooltip(Tooltip.create(Component.literal("Replaces the standard explosion with an identical one that reduces loading time at the expense of some detail. If you host a server you will have to change this value in the server config instead"))).build());
-		addRenderableWidget(explosion_performance_factor_slider = new ForgeSlider(20, 60, (int)(200 * (normalSize / scale)), 20, MutableComponent.create(new LiteralContents("")), MutableComponent.create(new LiteralContents("")), 30d, 60d, LuckyTNTLibConfigValues.EXPLOSION_PERFORMANCE_FACTOR.get() * 100, true));
-		addRenderableWidget(new Button.Builder(Component.literal("Reset"), button -> resetDoubleValue(LuckyTNTLibConfigValues.EXPLOSION_PERFORMANCE_FACTOR, 0.3d, explosion_performance_factor_slider)).bounds(width - (int)(200 * (normalSize / (float)scale)) - 20, 60, (int)(200 * (normalSize / (float)scale)), 20).build());
-		explosion_performance_factor_slider.setTooltip(Tooltip.create(Component.literal("Lower values give more details while higher values give more performance. Has significant impact on the shape of the explosion. If you host a server you will have to change this value in the server config instead")));
+		LinearLayout linear = layout.addToHeader(LinearLayout.vertical());
+		linear.addChild(new StringWidget(Component.translatable("config.title"), font), LayoutSettings::alignHorizontallyCenter);
+		GridLayout grid = new GridLayout();
+		
+		grid.defaultCellSetting().paddingHorizontal(4).paddingBottom(4).alignHorizontallyCenter();
+		RowHelper rows = grid.createRowHelper(3);
+		rows.addChild(performant_explosion = new Button.Builder(LuckyTNTLibConfigValues.PERFORMANT_EXPLOSION.get().booleanValue() ? Component.translatable("config.true") : Component.translatable("config.false"), button -> nextBooleanValue(LuckyTNTLibConfigValues.PERFORMANT_EXPLOSION, button)).build());
+		rows.addChild(new CenteredStringWidget(Component.translatable("config.performant_explosion"), font));
+		rows.addChild(new Button.Builder(Component.translatable("config.reset"), button -> resetBooleanValue(LuckyTNTLibConfigValues.PERFORMANT_EXPLOSION)).build());
+		rows.addChild(explosion_performance_factor_slider = new ForgeSlider(0, 0, 150, 20, Component.empty(), Component.empty(), 30d, 60d, LuckyTNTLibConfigValues.EXPLOSION_PERFORMANCE_FACTOR.get() * 100, true));
+		rows.addChild(new CenteredStringWidget(Component.translatable("config.explosion_performance_factor"), font));
+		rows.addChild(new Button.Builder(Component.translatable("config.reset"), button -> resetDoubleValue(LuckyTNTLibConfigValues.EXPLOSION_PERFORMANCE_FACTOR, explosion_performance_factor_slider)).build());
+		
+		layout.addToContents(grid);
+		layout.addToFooter(new Button.Builder(Component.translatable("config.done"), button -> onClose()).build());
+		layout.visitWidgets(this::addRenderableWidget);
+		repositionElements();
 	}
-
-	@Override
-	public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
-		super.render(graphics, mouseX, mouseY, partialTicks);
-		graphics.drawCenteredString(font, title, width / 2, 8, 0xFFFFFF);
-		graphics.drawCenteredString(font, Component.literal("Performant Explosion"), width / 2, 46, 0xFFFFFF);
-		graphics.drawCenteredString(font, Component.literal("Explosion Performance Factor"), width / 2, 66, 0xFFFFFF);
-	}
+	
+    @Override
+    public void repositionElements() {
+        layout.arrangeElements();
+    }
 	
 	@Override
 	public void onClose() {
@@ -52,9 +63,13 @@ public class ConfigScreen extends Screen{
 		super.onClose();
 	}
 	
-	public void resetDoubleValue(ForgeConfigSpec.DoubleValue config, double newValue, ForgeSlider slider) {
-		config.set(newValue);
-		slider.setValue(newValue * 100);
+	public void resetDoubleValue(ForgeConfigSpec.DoubleValue config, ForgeSlider slider) {
+		config.set(config.getDefault());
+		slider.setValue(config.getDefault() * 100);
+	}
+	
+	public void resetBooleanValue(ForgeConfigSpec.BooleanValue config) {
+		config.set(config.getDefault());
 	}
 	
 	public void nextBooleanValue(ForgeConfigSpec.BooleanValue config, Button button) {
