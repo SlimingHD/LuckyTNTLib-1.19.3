@@ -24,16 +24,18 @@ public class ConfigScreen extends Screen{
 	public ConfigScreen() {
 		super(Component.literal("Lucky TNT Lib Config"));
 	}
-	
+
 	@Override
 	public void init() {
-		addRenderableWidget(new Button.Builder(Component.literal("Done"), button -> onClose()).bounds((width - 100) / 2, height - 30, 100, 20).build());
-		addRenderableWidget(performant_explosion = new Button.Builder(LuckyTNTLibConfigValues.PERFORMANT_EXPLOSION.get().booleanValue() ? Component.literal("True") : Component.literal("False"), button -> nextBooleanValue(LuckyTNTLibConfigValues.PERFORMANT_EXPLOSION, performant_explosion)).bounds(20, 40, 200, 20).tooltip(Tooltip.create(Component.literal("Replaces the standard explosion with an identical one that reduces loading time at the expense of some detail. If you host a server you will have to change this value in the server config instead"))).build());
-		addRenderableWidget(explosion_performance_factor_slider = new ForgeSlider(20, 60, 200, 20, MutableComponent.create(new LiteralContents("")), MutableComponent.create(new LiteralContents("")), 30d, 60d, LuckyTNTLibConfigValues.EXPLOSION_PERFORMANCE_FACTOR.get() * 100, true));
-		addRenderableWidget(new Button.Builder(Component.literal("Reset"), button -> resetDoubleValue(LuckyTNTLibConfigValues.EXPLOSION_PERFORMANCE_FACTOR, 0.3d, explosion_performance_factor_slider)).bounds(width - 220, 60, 200, 20).build());
+		float scale = minecraft.options.guiScale().get() == 0 ? minecraft.getWindow().calculateScale(0, minecraft.isEnforceUnicode()) * 1.5f : minecraft.options.guiScale().get() * 1.5f;
+		float normalSize = minecraft.getWindow().calculateScale(0, minecraft.isEnforceUnicode()) - 1f;
+		addRenderableWidget(new Button.Builder(Component.literal("Done"), button -> onClose()).bounds((width - (int)(100 * (normalSize / (float)scale))) / 2, height - 30, (int)(100 * (normalSize / (float)scale)), 20).build());
+		addRenderableWidget(performant_explosion = new Button.Builder(LuckyTNTLibConfigValues.PERFORMANT_EXPLOSION.get().booleanValue() ? Component.literal("True") : Component.literal("False"), button -> nextBooleanValue(LuckyTNTLibConfigValues.PERFORMANT_EXPLOSION, performant_explosion)).bounds(20, 40, (int)(200 * (normalSize / (float)scale)), 20).tooltip(Tooltip.create(Component.literal("Replaces the standard explosion with an identical one that reduces loading time at the expense of some detail. If you host a server you will have to change this value in the server config instead"))).build());
+		addRenderableWidget(explosion_performance_factor_slider = new ForgeSlider(20, 60, (int)(200 * (normalSize / scale)), 20, MutableComponent.create(new LiteralContents("")), MutableComponent.create(new LiteralContents("")), 30d, 60d, LuckyTNTLibConfigValues.EXPLOSION_PERFORMANCE_FACTOR.get() * 100, true));
+		addRenderableWidget(new Button.Builder(Component.literal("Reset"), button -> resetDoubleValue(LuckyTNTLibConfigValues.EXPLOSION_PERFORMANCE_FACTOR, 0.3d, explosion_performance_factor_slider)).bounds(width - (int)(200 * (normalSize / (float)scale)) - 20, 60, (int)(200 * (normalSize / (float)scale)), 20).build());
 		explosion_performance_factor_slider.setTooltip(Tooltip.create(Component.literal("Lower values give more details while higher values give more performance. Has significant impact on the shape of the explosion. If you host a server you will have to change this value in the server config instead")));
 	}
-	
+
 	@Override
 	public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
 		super.render(graphics, mouseX, mouseY, partialTicks);
