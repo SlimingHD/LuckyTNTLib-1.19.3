@@ -3,7 +3,7 @@ loaderVersion="[49,)"
 license="All rights reserved"
 [[mods]]
 modId="luckytntlib"
-version="49.0.2.1"
+version="49.0.50.0"
 displayName="Lucky TNT Lib"
 logoFile="logo.png"
 credits="Created, updated and maintained by SlimingHD"
