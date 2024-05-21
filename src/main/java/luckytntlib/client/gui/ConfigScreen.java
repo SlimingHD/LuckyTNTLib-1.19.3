@@ -1,7 +1,6 @@
 package luckytntlib.client.gui;
 
 import luckytntlib.config.LuckyTNTLibConfigValues;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.StringWidget;
 import net.minecraft.client.gui.components.Tooltip;
