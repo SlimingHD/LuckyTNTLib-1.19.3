@@ -42,7 +42,7 @@ public class ConfigScreen extends Screen{
 		rows.addChild(performant_explosion = new Button.Builder(LuckyTNTLibConfigValues.PERFORMANT_EXPLOSION.get().booleanValue() ? CommonComponents.OPTION_ON : CommonComponents.OPTION_OFF, button -> nextBooleanValue(LuckyTNTLibConfigValues.PERFORMANT_EXPLOSION, button)).width(100).build());
 		performant_explosion.setTooltip(Tooltip.create(Component.translatable("config.performant_explosion_tooltip")));
 		rows.addChild(new CenteredStringWidget(Component.translatable("config.performant_explosion"), font));
-		rows.addChild(new Button.Builder(Component.translatable("config.reset"), button -> resetBooleanValue(LuckyTNTLibConfigValues.PERFORMANT_EXPLOSION)).width(100).build());
+		rows.addChild(new Button.Builder(Component.translatable("config.reset"), button -> resetBooleanValue(LuckyTNTLibConfigValues.PERFORMANT_EXPLOSION, performant_explosion)).width(100).build());
 		rows.addChild(explosion_performance_factor_slider = new ForgeSlider(0, 0, 100, 20, Component.empty(), Component.empty(), 30d, 60d, LuckyTNTLibConfigValues.EXPLOSION_PERFORMANCE_FACTOR.get() * 100, true));
 		explosion_performance_factor_slider.setTooltip(Tooltip.create(Component.translatable("config.explosion_performance_factor_tooltip")));
 		rows.addChild(new CenteredStringWidget(Component.translatable("config.explosion_performance_factor"), font));
@@ -72,8 +72,9 @@ public class ConfigScreen extends Screen{
 		slider.setValue(config.getDefault() * 100);
 	}
 	
-	public void resetBooleanValue(ForgeConfigSpec.BooleanValue config) {
+	public void resetBooleanValue(ForgeConfigSpec.BooleanValue config, Button button) {
 		config.set(config.getDefault());
+		button.setMessage(config.getDefault() ? CommonComponents.OPTION_ON : CommonComponents.OPTION_OFF);
 	}
 	
 	public void nextBooleanValue(ForgeConfigSpec.BooleanValue config, Button button) {
