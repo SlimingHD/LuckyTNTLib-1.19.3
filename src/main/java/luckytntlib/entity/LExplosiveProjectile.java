@@ -129,7 +129,7 @@ public class LExplosiveProjectile extends AbstractArrow implements IExplosiveEnt
 	
 	@Override
 	public ItemStack getPickupItem() {
-		return ItemStack.EMPTY;
+		return getItem();
 	}
 	
 	@Override
