@@ -28,7 +28,7 @@ public class ConfigScreen extends Screen{
 	HeaderAndFooterLayout layout = new HeaderAndFooterLayout(this, 20, 40);
 	
 	public ConfigScreen() {
-		super(Component.literal("Lucky TNT Lib Config"));
+		super(Component.translatable("config.title"));
 	}
 	
 	@Override
