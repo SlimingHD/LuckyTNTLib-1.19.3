@@ -39,10 +39,11 @@ public class LExplosiveProjectile extends AbstractArrow implements IExplosiveEnt
 	private PrimedTNTEffect effect;
 	
 	public LExplosiveProjectile(EntityType<LExplosiveProjectile> type, Level level, PrimedTNTEffect effect) {
-		super(type, level, effect == null ? new ItemStack(Items.CARROT) : effect.getItemStack());
+		super(type, level, new ItemStack(Items.CARROT));
 		setTNTFuse(effect.getDefaultFuse(this));
 		pickup = AbstractArrow.Pickup.DISALLOWED;
 		this.effect = effect;
+		setPickupItemStack(getDefaultPickupItem());
 	}
 	
 	@Override
@@ -128,11 +129,6 @@ public class LExplosiveProjectile extends AbstractArrow implements IExplosiveEnt
 	}
 	
 	@Override
-	public ItemStack getPickupItem() {
-		return getItem();
-	}
-	
-	@Override
 	public int getTNTFuse() {
 		return entityData.get(DATA_FUSE_ID);
 	}
@@ -179,6 +175,6 @@ public class LExplosiveProjectile extends AbstractArrow implements IExplosiveEnt
 
 	@Override
 	protected ItemStack getDefaultPickupItem() {
-		return getItem();
+		return new ItemStack(Items.CARROT);
 	}
 }

@@ -175,7 +175,7 @@ public abstract class PrimedTNTEffect{
 	 * @return {@link Item} used for the {@link ItemStack} of {@link PrimedTNTEffect#getItemStack()}
 	 */
 	public Item getItem() {
-		return Items.CARROT;
+		return Items.AIR;
 	}
 	
 	/**

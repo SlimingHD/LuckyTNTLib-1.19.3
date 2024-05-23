@@ -69,7 +69,7 @@ public class TNTXStrengthEffect extends PrimedTNTEffect{
 	
 	@Override
 	public Item getItem() {
-		return dynamite.get().get() == null ? Items.CARROT : dynamite.get().get();
+		return dynamite.get().get() == null ? Items.AIR : dynamite.get().get();
 	}
 	
 	@Override
