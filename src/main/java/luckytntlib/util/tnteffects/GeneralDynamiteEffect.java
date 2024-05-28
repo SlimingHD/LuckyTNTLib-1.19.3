@@ -18,7 +18,7 @@ public class GeneralDynamiteEffect extends PrimedTNTEffect{
 
 	private final Supplier<RegistryObject<LDynamiteItem>> dynamite;
 	private final PrimedTNTEffect effect;
-	private Supplier<ParticleOptions> particles = () -> ParticleTypes.SMOKE;
+	private ParticleOptions particles = ParticleTypes.SMOKE;
 	
 	/**
 	 * 
@@ -26,7 +26,7 @@ public class GeneralDynamiteEffect extends PrimedTNTEffect{
 	 * @param particles  Particles to display
 	 * @param effect  TNT effect to execute
 	 */
-	public GeneralDynamiteEffect(Supplier<RegistryObject<LDynamiteItem>> dynamite, Supplier<ParticleOptions> particles, PrimedTNTEffect effect) {
+	public GeneralDynamiteEffect(Supplier<RegistryObject<LDynamiteItem>> dynamite, ParticleOptions particles, PrimedTNTEffect effect) {
 		this.dynamite = dynamite;
 		this.particles = particles;
 		this.effect = effect;
@@ -55,7 +55,7 @@ public class GeneralDynamiteEffect extends PrimedTNTEffect{
 	
 	@Override
 	public void spawnParticles(IExplosiveEntity entity) {
-		entity.getLevel().addParticle(particles.get(), entity.x(), entity.y(), entity.z(), 0, 0, 0);
+		entity.getLevel().addParticle(particles, entity.x(), entity.y(), entity.z(), 0, 0, 0);
 	}
 	
 	@Override
