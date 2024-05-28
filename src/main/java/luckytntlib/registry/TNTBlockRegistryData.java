@@ -1,7 +1,5 @@
 package luckytntlib.registry;
 
-import java.util.function.Supplier;
-
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.level.material.MapColor;
@@ -19,12 +17,12 @@ public class TNTBlockRegistryData {
 	private final boolean addDispenseBehavior;
 	private final boolean randomizedFuseUponExploded;
 	private final boolean addToTNTLists;
-	private final Supplier<MutableComponent> description;
+	private final MutableComponent description;
 	private final String tab;
-	private final Supplier<MapColor> color;
+	private final MapColor color;
 	
 	
-	private TNTBlockRegistryData(String registryName, boolean makeItem, boolean addDispenseBehavior, boolean randomizedFuseUponExploded, boolean addToTNTLists, Supplier<MutableComponent> description, String tab, Supplier<MapColor> color) {
+	private TNTBlockRegistryData(String registryName, boolean makeItem, boolean addDispenseBehavior, boolean randomizedFuseUponExploded, boolean addToTNTLists, MutableComponent description, String tab, MapColor color) {
 		this.registryName = registryName;
 		this.makeItem = makeItem;
 		this.addDispenseBehavior = addDispenseBehavior;
@@ -55,7 +53,7 @@ public class TNTBlockRegistryData {
 		return addToTNTLists;
 	}
 	
-	public Supplier<MutableComponent> getDescription() {
+	public MutableComponent getDescription() {
 		return description;
 	}
 
@@ -63,7 +61,7 @@ public class TNTBlockRegistryData {
 		return tab;
 	}
 
-	public Supplier<MapColor> getColor() {
+	public MapColor getColor() {
 		return color;
 	}
 	
@@ -74,9 +72,9 @@ public class TNTBlockRegistryData {
 		private boolean addDispenseBehavior = true;
 		private boolean randomizedFuseUponExploded = true;
 		private boolean addToTNTLists = true;
-		private Supplier<MutableComponent> description = () -> Component.translatable("");
+		private MutableComponent description = Component.translatable("");
 		private String tab = "none";
-		private Supplier<MapColor> color = () -> MapColor.COLOR_RED;
+		private MapColor color = MapColor.COLOR_RED;
 		
 		public Builder(String registryName) {
 			this.registryName = registryName;
@@ -102,7 +100,7 @@ public class TNTBlockRegistryData {
 			return this;
 		}
 		
-		public Builder description(Supplier<MutableComponent> description) {
+		public Builder description(MutableComponent description) {
 			this.description = description;
 			return this;
 		}
@@ -112,7 +110,7 @@ public class TNTBlockRegistryData {
 			return this;
 		}
 
-		public Builder color(Supplier<MapColor> color) {
+		public Builder color(MapColor color) {
 			this.color = color;
 			return this;
 		}
