@@ -54,10 +54,10 @@ public class ConfigScreen extends Screen{
 		repositionElements();
 	}
 	
-    @Override
-    public void repositionElements() {
-        layout.arrangeElements();
-    }
+  @Override
+  public void repositionElements() {
+    layout.arrangeElements();
+  }
 
 	@Override
 	public void onClose() {
