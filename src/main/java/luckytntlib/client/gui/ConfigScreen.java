@@ -17,7 +17,7 @@ import net.minecraftforge.common.ForgeConfigSpec;
 
 /**
  * The config screen of Lucky TNT Lib.
- * Extending this is not advised.
+ * Extending this is not advised. :)
  */
 public class ConfigScreen extends Screen{
 
@@ -30,7 +30,7 @@ public class ConfigScreen extends Screen{
 	public ConfigScreen() {
 		super(Component.translatable("config.title"));
 	}
-	
+
 	@Override
 	public void init() {
 		LinearLayout linear = layout.addToHeader(LinearLayout.vertical());
@@ -54,11 +54,11 @@ public class ConfigScreen extends Screen{
 		repositionElements();
 	}
 	
-    @Override
-    public void repositionElements() {
-        layout.arrangeElements();
-    }
-	
+  @Override
+  public void repositionElements() {
+    layout.arrangeElements();
+  }
+
 	@Override
 	public void onClose() {
 		if(explosion_performance_factor_slider != null) {

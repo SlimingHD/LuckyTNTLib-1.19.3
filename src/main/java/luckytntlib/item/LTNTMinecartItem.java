@@ -6,6 +6,7 @@ import javax.annotation.Nullable;
 
 import luckytntlib.entity.LTNTMinecart;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.dispenser.DispenseItemBehavior;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.InteractionResult;
@@ -57,7 +58,7 @@ public class LTNTMinecartItem extends MinecartItem{
 		}
 		LTNTMinecart minecart = createMinecart(level, pos.getX() + 0.5f, pos.getY() + 0.0625f + railHeight, pos.getZ() + 0.5f, context.getPlayer());
 		minecart.setOwner(context.getPlayer());
-        if (stack.hasCustomHoverName()) {
+        if (stack.has(DataComponents.CUSTOM_NAME) && !stack.get(DataComponents.CUSTOM_NAME).getString().equals("")) {
             minecart.setCustomName(stack.getHoverName());
         }
         level.gameEvent(context.getPlayer(), GameEvent.ENTITY_PLACE, pos);

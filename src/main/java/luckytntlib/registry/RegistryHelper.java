@@ -157,8 +157,8 @@ public class RegistryHelper {
 			RegistryObject<Item> item = itemRegistry.register(blockData.getRegistryName(), () -> new BlockItem(block.get(), new Item.Properties()) {
 				
 				@Override
-				public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> components, TooltipFlag flag) {
-					super.appendHoverText(stack, level, components, flag);
+				public void appendHoverText(ItemStack stack, Item.TooltipContext ctx, List<Component> components, TooltipFlag flag) {
+					super.appendHoverText(stack, ctx, components, flag);
 					if(!blockData.getDescription().getString().equals("")) {
 						components.add(blockData.getDescription());
 					}
@@ -244,8 +244,8 @@ public class RegistryHelper {
 			RegistryObject<Item> item = itemRegistry.register(blockData.getRegistryName(), () -> new BlockItem(block.get(), new Item.Properties()) {
 				
 				@Override
-				public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> components, TooltipFlag flag) {
-					super.appendHoverText(stack, level, components, flag);
+				public void appendHoverText(ItemStack stack, Item.TooltipContext ctx, List<Component> components, TooltipFlag flag) {
+					super.appendHoverText(stack, ctx, components, flag);
 					if(!blockData.getDescription().getString().equals("")) {
 						components.add(blockData.getDescription());
 					}
