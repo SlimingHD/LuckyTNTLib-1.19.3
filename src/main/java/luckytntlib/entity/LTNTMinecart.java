@@ -28,6 +28,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.RegistryObject;
 
@@ -84,16 +85,38 @@ public class LTNTMinecart extends Minecart implements IExplosiveEntity{
 	
 	@Override
 	public boolean hurt(DamageSource source, float amount) {
-		Entity entity = source.getDirectEntity();
-		if (entity instanceof AbstractArrow abstractarrow) {
-			if (abstractarrow.isOnFire() && getTNTFuse() < 0) {
-				fuse();
+		if (!level().isClientSide() && !isRemoved()) {
+			Entity entity = source.getDirectEntity();
+			if (entity instanceof AbstractArrow abstractarrow) {
+				if (abstractarrow.isOnFire() && getTNTFuse() < 0) {
+					fuse();
+				}
 			}
+			if(source.is(DamageTypes.LIGHTNING_BOLT) && getTNTFuse() >= 0) {
+				return false;
+			}
+			if (isInvulnerableTo(source)) {
+				return false;
+			} else {
+				setHurtDir(-getHurtDir());
+				setHurtTime(10);
+				markHurt();
+				setDamage(getDamage() + amount * 10.0F);
+				gameEvent(GameEvent.ENTITY_DAMAGE, source.getEntity());
+				boolean flag = source.getEntity() instanceof Player && ((Player) source.getEntity()).getAbilities().instabuild;
+				if (flag || getDamage() > 40.0F) {
+					ejectPassengers();
+					if (flag && !hasCustomName()) {
+						discard();
+					} else {
+					}
+				}
+
+				return true;
+			}
+		} else {
+			return true;
 		}
-		if(source.is(DamageTypes.LIGHTNING_BOLT) && getTNTFuse() >= 0) {
-			return false;
-		}
-		return super.hurt(source, amount);
 	}
 	
 	@Override

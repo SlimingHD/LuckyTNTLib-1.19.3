@@ -1,0 +1,8 @@
+{
+	"config.title" : "Lucky TNT Lib Config",
+	"config.reset" : "Reset",
+	"config.performant_explosion" : "Performant Explosion",
+	"config.explosion_performance_factor" : "Performance Factor",
+	"config.performant_explosion_tooltip" : "Replaces the standard explosion with an identical one that reduces loading time at the expense of some detail. If you host a server you will have to change this value in the server config instead",
+	"config.explosion_performance_factor_tooltip" : "Lower values retain more details while higher values provide more performance. Has significant impact on the shape of explosions. If you host a server you will have to change this value in the server config instead"
+}
