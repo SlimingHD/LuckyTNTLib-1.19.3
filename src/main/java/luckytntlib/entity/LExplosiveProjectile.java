@@ -22,7 +22,6 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 
 /**
- * 
  * The LExplosiveProjectile is an extension of Minecraft's {@link AbstractArrow} 
  * and represents a projectile that holds a {@link PrimedTNTEffect}.
  * Unlike a {@link PrimedLTNT} a LExplosiveProjectile has access to other types of logic specifically designed

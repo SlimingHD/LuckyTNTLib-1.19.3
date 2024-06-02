@@ -9,8 +9,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.registries.RegistryObject;
 
-/**
- * 
+/** 
  * GeneralDynamiteEffect is an extension of the {@link PrimedTNTEffect} and is an easy way of generalizing Dynamites without having to 
  * make existing PrimedTNTEffects messy by being able to transfer already existing PrimedTNTEffect together with some Particles and a Dynamite Item to render.
  */
@@ -21,7 +20,6 @@ public class GeneralDynamiteEffect extends PrimedTNTEffect{
 	private ParticleOptions particles = ParticleTypes.SMOKE;
 	
 	/**
-	 * 
 	 * @param dynamite  {@link LDynamiteItem} to render
 	 * @param particles  Particles to display
 	 * @param effect  TNT effect to execute

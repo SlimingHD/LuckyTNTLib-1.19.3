@@ -15,7 +15,6 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraftforge.registries.RegistryObject;
 
 /**
- * 
  * The LuckyTNTBlock is an extension of the {@link LTNTBlock} and serves the simple purpose of spawning a random
  * {@link PrimedLTNT} of a {@link LTNTBlock} contained in a {@link List}.
  * The list could for instance be set to one of the many lists of {@link LTNTBlock} found in the {@link RegistryHelper}.

@@ -13,8 +13,8 @@ import net.minecraftforge.common.extensions.IForgeEntity;
  * 
  * IExplosiveEntity is an extension of {@link IForgeEntity} and is implemented by all entities introduced by Lucky TNT Lib.
  * <p>
- * IExplosiveEntity is required because, for the most part, Minecraft's entities qualify as explosive entities but are not interchangeable.
- * Example given {@link LivingEntity}, {@link PrimedTnt} and {@link AbstractArrow}.
+ * IExplosiveEntity is required because most of Minecraft's entities qualify as explosive entities but are not interchangeable.
+ * Examples of this are {@link LivingEntity}, {@link PrimedTnt} and {@link AbstractArrow}. All of these entities would be fine being explosive, but you can't cast them
  * <p>
  * It is advised to use methods given by this Interface rather than Minecraft's methods to make porting easier and to increase universalness.
  * @implNote Only entities implementing this Interface are capeable of using anything extending upon {@link PrimedTNTEffect}
@@ -29,7 +29,7 @@ public interface IExplosiveEntity extends IForgeEntity{
 	
 	/**
 	 * Sets the fuse of this IExplosiveEntity.
-	 * 
+	 * The fuse determines the time in ticks, which the explosive will wait after being primed. Once the fuse hits 0, the explosion is set off
 	 * The fuse should not be set manually in most cases and is usually handled within {@link PrimedTNTEffect#baseTick(IExplosiveEntity)}
 	 * @param fuse  the new fuse
 	 */
@@ -72,13 +72,12 @@ public interface IExplosiveEntity extends IForgeEntity{
 
 	/**
 	 * Gets the {@link PrimedTNTEffect} of this IExplosiveEntity
-	 * 
 	 * @return the PrimedTNTEffect
 	 */
 	public PrimedTNTEffect getEffect();
 	
 	/**
-	 * Gets the Owner of this IExplosiveEntity.
+	 * Gets the owning entity of this IExplosiveEntity.
 	 * 
 	 * The Owner, usually a Player, of this IExplosiveEntity, which is mostly used for damage sources must not be set manually. It is automatically assigned in all classes implementing this Interface.
 	 * @return the Owner

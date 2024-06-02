@@ -33,7 +33,6 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.RegistryObject;
 
 /**
- * 
  * The LTNTMinecart is an extension of Minecraft's {@link AbstractMinecart}
  * and can hold an already existing {@link PrimedLTNT} and its {@link PrimedTNTEffect}.
  * It implements {@link IExplosiveEntity}.

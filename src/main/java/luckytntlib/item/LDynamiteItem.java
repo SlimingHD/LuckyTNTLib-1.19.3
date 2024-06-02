@@ -29,7 +29,7 @@ import net.minecraftforge.registries.RegistryObject;
  * It can be thrown and spawns a {@link LExplosiveProjectile} similar to an egg or a snowball.
  * If a {@link DispenseItemBehavior} has been registered dispensers can also throw the dynamite.
  */
-public class LDynamiteItem extends Item{
+public class LDynamiteItem extends Item {
 	
 	@Nullable
 	protected RegistryObject<EntityType<LExplosiveProjectile>> dynamite;

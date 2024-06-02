@@ -22,16 +22,15 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
 /**
- * Extensions of this class serve as a way to define how a TNT, Minecart or Dynamite behaves.
+ * Extensions of this class serve as a way to define how a TNT, TNT Minecart or Dynamite behaves.
  * <p>
  * It controls what a TNT does upon exploding, what particles it displays, what Block/Item gets rendered 
  * and general logic like conditions for exploding.
  */
-public abstract class PrimedTNTEffect{	
+public abstract class PrimedTNTEffect {	
 	/**
-	 * 
 	 * This void is the heart of the PrimedTNTEffect. It's executed every tick on both the logical client and the logical server side 
-	 * and is slightly different for every entity given by LTL implementing {@link IExplosiveEntity}.
+	 * and is slightly different for every entity implementing {@link IExplosiveEntity} provided by this library.
 	 * <p>
 	 * Its default implementation works for all Explosives with littly complexity in their behaviour.
 	 * <p>
@@ -96,7 +95,7 @@ public abstract class PrimedTNTEffect{
 	}
 	
 	/**
-	 * This void is only executed on the logical client side by {@link PrimedTNTEffect#baseTick(IExplosiveEntity)} every tick.
+	 * This void is executed on the logical client side by {@link PrimedTNTEffect#baseTick(IExplosiveEntity)} every tick.
 	 * <p>
 	 * Override this void if you want to display different particles or if you want no particles at all.
 	 * @param entity  the {@link IExplosiveEntity} this PrimedTNTEffect belongs to.
@@ -106,9 +105,9 @@ public abstract class PrimedTNTEffect{
 	}
 	
 	/**
-	 * This void is only executed on the logical server side by {@link PrimedTNTEffect#baseTick(IExplosiveEntity)} once the fuse hits 0.
+	 * This void is executed on the logical server side by {@link PrimedTNTEffect#baseTick(IExplosiveEntity)} once the fuse hits 0 or another condition for an explosion, like a projectile hitting a block, has been hit.
 	 * <p>
-	 * @implNote Due to synchronization inconsistencies a clientExplosion does not exist and must be implemented manually without the dependency of an entity.
+	 * @implNote Due to the entity being removed right after the explosion, synchronization inconsistencies arise and a clientExplosion does not exist. If you have the need for one, you will have to manually add it without the dependency of an entity or change the removing of the entity by overriding {@link PrimedTNTEffect#baseTick(IExplosiveEntity)}
 	 * @param entity  the {@link IExplosiveEntity} this PrimedTNTEffect belongs to.
 	 */
 	public void serverExplosion(IExplosiveEntity entity) {	
@@ -123,6 +122,7 @@ public abstract class PrimedTNTEffect{
 	
 	/**
 	 * @param entity  the {@link IExplosiveEntity} this PrimedTNTEffect belongs to.
+	 * @implNote defaults to 80 (4 seconds)
 	 * @return Default Fuse of this Epxlosive Entity.
 	 */
 	public int getDefaultFuse(IExplosiveEntity entity) {
@@ -131,6 +131,7 @@ public abstract class PrimedTNTEffect{
 	
 	/**
 	 * @param entity  the {@link IExplosiveEntity} this PrimedTNTEffect belongs to.
+	 * @implNote defaults to 1f
 	 * @return Size of this entity for the renderer.
 	 */
 	public float getSize(IExplosiveEntity entity) {
@@ -138,6 +139,7 @@ public abstract class PrimedTNTEffect{
 	}
 	
 	/**
+	 * @implNote defaults to true
 	 * @return Whether or not this TNT plays an explosion sound when executing {@link PrimedTNTEffect#serverExplosion(IExplosiveEntity)}.
 	 */
 	public boolean playsSound() {
@@ -146,6 +148,7 @@ public abstract class PrimedTNTEffect{
 	
 	/**
 	 * @implNote Only used by {@link LExplosiveProjectile}!
+	 * @implNote defaults to true
 	 * @return Whether or not this Explosive Projectile explodes upon hitting a block or an entity or not
 	 */
 	public boolean explodesOnImpact() {
@@ -154,6 +157,7 @@ public abstract class PrimedTNTEffect{
 	
 	/**
 	 * @implNote Only used by {@link LExplosiveProjectile}!
+	 * @implNote defaults to false
 	 * @return Whether or not this Explosive Projectile's fuse should tick down while still in the air
 	 */
 	public boolean airFuse() {
@@ -198,8 +202,8 @@ public abstract class PrimedTNTEffect{
 	}
 	
 	/**
-	 * Converts a vector, idealy the position vector to a BlockPos
-	 * @param vec  the vector converted
+	 * Converts a vector to a BlockPos
+	 * @param vec  the vector to be converted
 	 * @return {@link BlockPos} 
 	 */
 	public BlockPos toBlockPos(Vec3 vec) {

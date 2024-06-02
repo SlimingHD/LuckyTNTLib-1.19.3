@@ -34,8 +34,10 @@ import net.minecraftforge.event.ForgeEventFactory;
 
 /**
  * ImprovedExplosion is an extension of Minecraft's {@link Explosion}.
- * It is needed because the explosion of minecraft is rather limited in functionality and size,
+ * It is needed because the explosion of Minecraft is rather limited in functionality and size,
  * while an ImprovedExplosion has no limit in its size and offers multiple and dynamic ways to interact with and customize the explosion.
+ * Similar to Minecraft's explosion it is also raycasted, making it evaluate every block in its path.
+ * Due to an improved algorithm, no block drops and no particles it also is more performant, making it best suited for humongous explosions.
  */
 public class ImprovedExplosion extends Explosion{
 

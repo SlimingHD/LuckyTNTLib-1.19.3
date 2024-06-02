@@ -13,7 +13,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraftforge.registries.RegistryObject;
 
 /**
- * 
  * The LuckyTNTMinecart is an extension of the {@link LTNTMinecart}
  * and turns into a random {@link LTNTMinecart} of a list when fused.
  */

@@ -14,7 +14,6 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.RegistryObject;
 
 /**
- * 
  * The LuckyDynamiteItem is an extension of the {@link LDynamiteItem} and serves the simple purpose of spawning a random
  * {@link LExplosiveProjectile} of a {@link LDynamiteItem} contained in a {@link List}.
  * The list could for instance be set to one of the many lists of {@link LDynamiteItem} found in the {@link RegistryHelper}.

@@ -5,7 +5,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
 /**
- * 
  * An IBlockExplosionCondition is used by different explosions to check whether a block is suited for further actions or not.
  * Further actions include blocks getting added to a List or passed to an {@link IForEachBlockExplosionEffect}.
  * It is usually used as a parameter of a function.

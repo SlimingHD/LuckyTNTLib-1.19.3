@@ -12,11 +12,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
-/**
- * 
- * The ExplosionHelper offers many basic functions that help you get or edit large ares of blocks in the current {@link Level}.
+/** 
+ * The ExplosionHelper offers many basic functions that help you get or edit large areas of blocks in the current {@link Level}.
  * This includes simple spherical functions, but also more complex methods like getting the top most block in a sphere.
- * On top of that it also allows for easy customization.
  */
 public class ExplosionHelper {
 
@@ -200,7 +198,7 @@ public class ExplosionHelper {
 	
 	/**
 	 * Gets only the top most blocks in a sphere and edits them according to the given blockEffect.
-	 * The function goes from top to bottom and the first block that is air or not solid and followed by a solid block below is considered the top most block.
+	 * The function scans from top to bottom and the first block that is air or not solid and followed by a solid block below is considered the top most block.
 	 * @param level  the current level
 	 * @param position  the center position of the top block explosion
 	 * @param radius  the radius of the sphere
@@ -226,7 +224,7 @@ public class ExplosionHelper {
 	
 	/**
 	 * Gets only the top most blocks in a sphere and edits them according to the given blockEffect.
-	 * The function goes from top to bottom and the block above the first block that is not air is considered the top most block.
+	 * The function scans from top to bottom and the block above the first block that is not air is considered the top most block.
 	 * If the condition is not met it will continue to search for another top block further down
 	 * @param level  the current level
 	 * @param position  the center position of the top block explosion

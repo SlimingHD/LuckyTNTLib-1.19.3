@@ -17,8 +17,7 @@ import net.minecraft.world.level.block.TntBlock;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-/**
- * 
+/** 
  * The LTNTRenderer renders an {@link IExplosiveEntity} as a block.
  * The block can be a type of TNT, in which case it will also be animated, or any other block,
  * in which case it is rendered like a normal block.

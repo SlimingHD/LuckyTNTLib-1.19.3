@@ -12,7 +12,7 @@ import net.minecraft.world.level.block.state.BlockState;
 /**
  * A StackedPrimedTNTEffect is a way of combining multiple PrimedTNTEffects into one.
  * <p>
- * It consists out of a primary and a list of secondary effects.
+ * It consists of a primary and a list of secondary effects.
  * Secondary effects get executed, limited to {@link PrimedTNTEffect#serverExplosion(IExplosiveEntity)} 
  * and {@link PrimedTNTEffect#explosionTick(IExplosiveEntity)}, one after the other, 
  * while the primary effect on top of this also decides how the explosive entity will look and behave.

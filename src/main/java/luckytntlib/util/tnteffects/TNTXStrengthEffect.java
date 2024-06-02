@@ -20,7 +20,7 @@ import net.minecraftforge.registries.RegistryObject;
  * 
  * TNTXStrengthEffect is an extension of the {@link PrimedTNTEffect} and is an easy way to use an {@link ImprovedExplosion} as a TNT effect.
  * <p>
- * It offers all the customization needed to create small and large explosions for Dynamite, TNT and {@link StackedPrimedTNTEffect}.
+ * It offers all the customization needed to create small and large explosions for projectiles, TNT and {@link StackedPrimedTNTEffect}.
  */
 public class TNTXStrengthEffect extends PrimedTNTEffect{
 	
@@ -125,15 +125,17 @@ public class TNTXStrengthEffect extends PrimedTNTEffect{
 		}
 
 		/**
-		 * This value decides the fuse of this effect
-		 * @param fuse
+		 * Determines the time in ticks the Explosive will wait before exploding
+		 * @implNote defaults to 80 Ticks (4 Seconds)
+		 * @param fuse in ticks
 		 */
 		public Builder fuse(int fuse) {
 			return new Builder(fuse, strength, xzStrength, yStrength, resistanceImpact, randomVecLength, fire, knockbackStrength, isStrongExplosion, size, airFuse, explodesOnImpact);
 		}
 		
 		/**
-		 * This value decides the strength/size/base radius of this explosion
+		 * Determines the base strength/radius of the explosion
+		 * @implNote defaults to 4 (just like TNT)
 		 * @param strength
 		 */
 		public Builder strength(int strength) {
@@ -141,7 +143,8 @@ public class TNTXStrengthEffect extends PrimedTNTEffect{
 		}
 		
 		/**
-		 * This is a specific value that essentially scales the explosion in the x and z direction
+		 * This is a specific value that scales the explosion in the x and z direction
+		 * @implNote defaults to 1f
 		 * @param xzStrength
 		 */
 		public Builder xzStrength(float xzStrength) {
@@ -149,7 +152,8 @@ public class TNTXStrengthEffect extends PrimedTNTEffect{
 		}
 		
 		/**
-		 * This is a specific value that essentially scales the explosion in the y direction
+		 * This is a specific value that scales the explosion in the y direction
+		 * @implNote defaults to 1f
 		 * @param yStrength
 		 */
 		public Builder yStrength(float yStrength) {
@@ -157,7 +161,8 @@ public class TNTXStrengthEffect extends PrimedTNTEffect{
 		}
 		
 		/**
-		 * This value decides the impact that explosion resistance of blocks has on the explosion
+		 * This value determines the impact that explosion resistance of blocks has on the explosion. Higher values equal weaker explosions
+		 * @implNote defaults to 1f
 		 * @param resistanceImpact
 		 */
 		public Builder resistanceImpact(float resistanceImpact) {
@@ -165,8 +170,9 @@ public class TNTXStrengthEffect extends PrimedTNTEffect{
 		}
 		
 		/**
-		 * This value is multiplier to the random vector length of explosion vectors shot by the {@link ImprovedExplosion}, 
-		 * which is also defined by the strength/size/base radius
+		 * This value is a multiplier to the random vector length of explosion vectors shot by the {@link ImprovedExplosion}, 
+		 * which is also affected by the base strength/radius. Higher values give more noisy explosion edges
+		 * @implNote defaults to 1f
 		 * @param randomVecLength
 		 */
 		public Builder randomVecLength(float randomVecLength) {
@@ -174,7 +180,8 @@ public class TNTXStrengthEffect extends PrimedTNTEffect{
 		}
 
 		/**
-		 * This boolean decides whether or not this explosion should spawn fire
+		 * This boolean determines whether or not this explosion should spawn fire, similar to a Ghast fireball
+		 * @implNote defaults to false
 		 * @param fire
 		 */
 		public Builder fire(boolean fire) {
@@ -182,7 +189,8 @@ public class TNTXStrengthEffect extends PrimedTNTEffect{
 		}
 
 		/**
-		 * Tis value is a multiplier to the knockback inflicted by the explosion
+		 * This value is a multiplier to the knockback inflicted on entities by the explosion
+		 * @implNote defaults to 1f
 		 * @param knockbackStrength
 		 */
 		public Builder knockbackStrength(float knockbackStrength) {
@@ -190,7 +198,9 @@ public class TNTXStrengthEffect extends PrimedTNTEffect{
 		}
 		
 		/**
-		 * This boolean decides whether or not the explosion resistance of fluids should be taken into account
+		 * This boolean decides whether or not the explosion resistance of fluids should be taken into account.
+		 * If turned on, water or lava will have huge effects on the looks of the explosion and will make even the strongest of explosions very tiny
+		 * @implNote defaults to false
 		 * @param isStrongExplosion
 		 */
 		public Builder isStrongExplosion(boolean isStrongExplosion) {
@@ -199,6 +209,7 @@ public class TNTXStrengthEffect extends PrimedTNTEffect{
 
 		/**
 		 * This value defines the size of the rendered Block/Item
+		 * @implNote defaults to 1f
 		 * @param size
 		 */
 		public Builder size(float size) {
@@ -206,8 +217,10 @@ public class TNTXStrengthEffect extends PrimedTNTEffect{
 		}
 		
 		/**
-		 * This boolean decides whether or not an explosive projectile should be allowed to tick down their fuse in the air
+		 * This boolean decides whether or not an explosive projectile should be allowed to tick down their fuse in the air.
+		 * If enabled, the projectile can explode in the air. Otherwise it will only tick down as long as it is grounded
 		 * @implNote only works for explosive projectiles
+		 * @implNote defaults to false
 		 * @param airFuse
 		 */
 		public Builder airFuse(boolean airFuse) {
@@ -215,8 +228,10 @@ public class TNTXStrengthEffect extends PrimedTNTEffect{
 		}
 		
 		/**
-		 * This boolean decides whether or not an explosive projectile explodes immediately upon impact
+		 * This boolean determines whether or not an explosive projectile explodes immediately upon impact.
+		 * If enabled, the projectile will ignore any fuse the moment it hits an entity or a block
 		 * @implNote only works for explosive projectiles
+		 * @implNote defaults to true
 		 * @param explodesOnImpact
 		 */
 		public Builder explodesOnImpact(boolean explodesOnImpact) {

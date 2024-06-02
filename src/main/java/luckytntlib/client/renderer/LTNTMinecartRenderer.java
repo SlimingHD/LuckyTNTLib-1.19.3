@@ -17,7 +17,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 /**
- * 
  * The LTNTMinecartRenderer renders a Minecart with a TNT inside of it.
  * The TNT is scaled using the size parameter of its {@link PrimedTNTEffect}.
  */
