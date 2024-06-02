@@ -17,7 +17,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.registries.RegistryObject;
 
 /**
- * 
  * TNTXStrengthEffect is an extension of the {@link PrimedTNTEffect} and is an easy way to use an {@link ImprovedExplosion} as a TNT effect.
  * <p>
  * It offers all the customization needed to create small and large explosions for projectiles, TNT and {@link StackedPrimedTNTEffect}.
