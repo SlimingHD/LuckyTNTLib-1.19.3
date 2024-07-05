@@ -5,7 +5,7 @@ pluginManagement {
             name = 'MinecraftForge'
             url = 'https://maven.minecraftforge.net/'
         }
-	}
+    }
 }
 
 plugins {
