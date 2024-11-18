@@ -10,6 +10,7 @@ import luckytntlib.config.LuckyTNTLibConfigs;
 import luckytntlib.entity.LTNTMinecart;
 import luckytntlib.item.LDynamiteItem;
 import luckytntlib.item.LTNTMinecartItem;
+import luckytntlib.network.PacketHandler;
 import luckytntlib.registry.RegistryHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
@@ -56,6 +57,8 @@ public class LuckyTNTLib
     }
     
     private void commonSetup(final FMLCommonSetupEvent event) {
+    	PacketHandler.register();
+    	
     	for(Pair<RegistryObject<LTNTBlock>, RegistryObject<Item>> pair : RegistryHelper.TNT_DISPENSER_REGISTRY_LIST) {
     		LTNTBlock block = pair.getFirst().get();
     		Item item = pair.getSecond().get();

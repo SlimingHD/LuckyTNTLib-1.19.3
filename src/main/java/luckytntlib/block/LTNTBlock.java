@@ -79,9 +79,9 @@ public class LTNTBlock extends TntBlock{
 		return Collections.singletonList(new ItemStack(this));
 	}
 	
-	@Deprecated //onBlockExploded does the same with the added benifit of a BlockState being given
 	@Override
 	public void wasExploded(Level level, BlockPos pos, Explosion explosion) {
+		onBlockExploded(null, level, pos, explosion);
 	}
 	
 	/**
