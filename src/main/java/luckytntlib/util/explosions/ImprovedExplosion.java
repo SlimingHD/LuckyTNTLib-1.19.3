@@ -5,9 +5,9 @@ import java.util.BitSet;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.Set;
-import java.util.Map.Entry;
 
 import javax.annotation.Nullable;
 
@@ -194,13 +194,13 @@ public class ImprovedExplosion extends Explosion{
 							blockY += yStep;
 							blockZ += zStep;
 							pos = new BlockPos((int)blockX, (int)blockY, (int)blockZ);
+							if (!level.isInWorldBounds(pos)) {
+								break;
+							}
 							if(pos.equals(lastPos)) {
 								continue;
 							}
 							lastPos = pos;
-							if (!level.isInWorldBounds(pos)) {
-								break;
-							}
 							SectionPos sectionPos = SectionPos.of(pos);
 							/**
 							 * If the section is empty, we can skip to the next step
@@ -268,7 +268,7 @@ public class ImprovedExplosion extends Explosion{
 		if(level instanceof ServerLevel server) {
 			finishImprovedExplosion(server, editedSections, sectionsToRemove);
 			if(fire) {
-				placeFire(random);
+				placeFire(randomVecLengthFac, random);
 			}
 		}
 		
@@ -348,14 +348,43 @@ public class ImprovedExplosion extends Explosion{
 	/**
 	 * Places fire wherever possible.
 	 * Best used after an explosion has already destroyed blocks.
+	 * @param randomVecLengthFac  the random vecLength multiplier used by {@link #doImprovedBlockExplosion(float, float, boolean, boolean, RandomSource)}
 	 * @param random  more efficient random number generator
 	 */
-	public void placeFire(RandomSource random) {
+	public void placeFire(float randomVecLengthFac, RandomSource random) {
 		for(int offX = -size / 2; offX <= size / 2; offX++) {
 			for(int offY = -size / 2; offY <= size / 2; offY++) {
 				for(int offZ = -size / 2; offZ <= size / 2; offZ++) {
-					if(random.nextFloat() < 0.2f && BaseFireBlock.canBePlacedAt(level, BlockPos.containing(new Vec3(posX, posY, posZ)).offset(offX, offY, offZ), Direction.DOWN)) {
-						level.setBlockAndUpdate(BlockPos.containing(new Vec3(posX, posY, posZ)).offset(offX, offY, offZ), BaseFireBlock.getState(level, BlockPos.containing(new Vec3(posX, posY, posZ)).offset(offX, offY, offZ)));
+					double distance = Math.sqrt(offX * offX + offY * offY + offZ * offZ);
+					if ((int)distance == size / 2 && random.nextFloat() < 0.2f) {
+						double xStep = offX / distance * 0.3f;
+						double yStep = offY / distance * 0.3f;
+						double zStep = offZ / distance * 0.3f;
+						float vectorLength = size * (0.7f + random.nextFloat() * randomVecLengthFac);
+						float blockX = (float)posX;
+						float blockY = (float)posY;
+						float blockZ = (float)posZ;
+						BlockPos lastPos = new BlockPos((int)blockX, (int)blockY, (int)blockZ);
+						for(float vecStep = 0; vecStep <= vectorLength; vecStep += 0.225f) {
+							blockX += xStep;
+							blockY += yStep;
+							blockZ += zStep;
+							BlockPos pos = new BlockPos((int)blockX, (int)blockY, (int)blockZ);
+							if(!level.isInWorldBounds(pos)) {
+								break;
+							}
+							if(pos.equals(lastPos)) {
+								continue;
+							}
+							BlockState state = level.getBlockState(pos);
+							if(!state.isAir() && !state.canBeReplaced()) {
+								break;
+							}
+							lastPos = pos;
+						}
+						if (BaseFireBlock.canBePlacedAt(level, lastPos, Direction.DOWN)) {
+							level.setBlockAndUpdate(lastPos, BaseFireBlock.getState(level, lastPos));
+						}
 					}
 				}
 			}
