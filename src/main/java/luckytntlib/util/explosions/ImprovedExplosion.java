@@ -17,6 +17,7 @@ import luckytntlib.network.PacketHandler;
 import luckytntlib.util.IExplosiveEntity;
 import luckytntlib.util.light.LightUpdateHelper;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.SectionPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
@@ -140,12 +141,33 @@ public class ImprovedExplosion extends Explosion{
 		this.size = size;
 		damageCalculator = explodingEntity == null ? new ExplosionDamageCalculator() : new EntityBasedExplosionDamageCalculator(explodingEntity);
 	}
+
 	
-	public void doImprovedBlockExplosion(float resistanceImpact, float randomVecLength, boolean ignoreFluidResistance, RandomSource random) {			
+	/**
+	 * Gets blocks in an area calculated by shooting vectors to the borders of a sphere determined by the {@link ImprovedExplosion#size}
+	 * and will further remove those blocks efficiently.
+	 * This removal process is not customizable any further.
+	 * This method uses very little RAM and performs about 4x faster than other explosion methods found in this class,
+	 * making it ideal for bigger and therefore more resource intensive explosions.
+	 * Has no limit on the size of the explosion
+	 * @param resistanceImpact  the relative impact that explosion resistance of blocks has on the penetration force of explosion
+	 * @param randomVecLength  the greater this value, the more distributed the length of the explosion vectors will be. Large explosions should have a value less than 1
+	 * @param fire  whether or not the explosion should spawn fire afterwards
+	 * @param ignoreFluidResistance  whether or not fluids should be ignored in the explosion resistance calculation
+	 * @param random  more efficient random number generator
+	 */
+	public void doImprovedBlockExplosion(float resistanceImpact, float randomVecLength, boolean ignoreFluidResistance, boolean fire, RandomSource random) {			
 		long time = System.currentTimeMillis();
 		float x = (float)posX, y = (float)posY, z = (float)posZ;
 		float randomVecLengthFac = 0.6f * randomVecLength;
 		float resistanceFac = 0.3f * resistanceImpact * 2.25f;
+		/**
+		 * Keeps track of removed blocks in a {@link LevelChunkSection} using a {@link BitSet} of the size 4096 (the amount of blocks in a Section, 12 bits used for indexing)
+		 * Each bit represents a block in a section, with (from left to right) bits 1-4 being the x index, bits 5-8 being the y index and bits 9-12 being the z index.
+		 * Adding these three coordinate indices together will result in the block index inside the {@link BitSet}, which can than later be decoded back into a position.
+		 * Once the whole of a section's blocks has been marked, the {@link BitSet} is removed and the Section is simply marked as "to remove", saving RAM.
+		 * If a section turns out to be empty, it will be marked as such and will be skipped by any calculations.
+		 */
 		HashMap<SectionPos, BitSet> editedSections = new HashMap<SectionPos, BitSet>();
 		HashMap<Long, SectionPos> sectionsToRemove = new HashMap<Long, SectionPos>();
 		HashMap<Long, SectionPos> emptySections = new HashMap<Long, SectionPos>();
@@ -180,6 +202,9 @@ public class ImprovedExplosion extends Explosion{
 								break;
 							}
 							SectionPos sectionPos = SectionPos.of(pos);
+							/**
+							 * If the section is empty, we can skip to the next step
+							 */
 							if(emptySections.containsKey(sectionPos.asLong())) {
 								vectorLength -= 0.3f * resistanceFac;
 								continue;
@@ -221,8 +246,15 @@ public class ImprovedExplosion extends Explosion{
 									bitSet.set(((pos.getX() & 15) << 8) | ((pos.getY() & 15) << 4) | (pos.getZ() & 15));
 								}
 							} else {
+								/**
+								 * Even if the block is air, we still want to mark its bit as true.
+								 * This is done to ensure that air blocks don't hinder a section being marked as "to remove"
+								 */
 								bitSet.set(((pos.getX() & 15) << 8) | ((pos.getY() & 15) << 4) | (pos.getZ() & 15));
 							}
+							/**
+							 * If all bits are set to true, we can mark the section as "to remove"
+							 */
 							if(bitSet.cardinality() == 4096) {
 								editedSections.remove(sectionPos);
 								sectionsToRemove.put(sectionPos.asLong(), sectionPos);
@@ -235,11 +267,23 @@ public class ImprovedExplosion extends Explosion{
 		
 		if(level instanceof ServerLevel server) {
 			finishImprovedExplosion(server, editedSections, sectionsToRemove);
+			if(fire) {
+				placeFire(random);
+			}
 		}
 		
 		System.out.println(System.currentTimeMillis() - time);
 	}
 	
+	/**
+	 * Takes the data collected by {@link #doImprovedBlockExplosion(float, float, boolean, boolean, RandomSource)}
+	 * and removes the blocks inside the {@link PalettedContainer} directly instead of using {@link Level#setBlock(BlockPos, BlockState, int)}
+	 * as well as updating both indirect and direct skylight afterwards.
+	 * This greatly improves performance, as millions of update calls are stopped.
+	 * @param server  level
+	 * @param editedSections  sections that do not get cleared completely
+	 * @param sectionsToRemove  sections that should be cleared completely
+	 */
 	protected void finishImprovedExplosion(ServerLevel server, HashMap<SectionPos, BitSet> editedSections, HashMap<Long, SectionPos> sectionsToRemove) {
 		HashMap<LevelChunk, BitSet> chunks = new HashMap<>();
 		
@@ -299,6 +343,23 @@ public class ImprovedExplosion extends Explosion{
 		
 		LightUpdateHelper.updateDirectSkyLight(server, chunks);
 		LightUpdateHelper.updateIndirectSkyLight(server, chunks);
+	}
+	
+	/**
+	 * Places fire wherever possible.
+	 * Best used after an explosion has already destroyed blocks.
+	 * @param random  more efficient random number generator
+	 */
+	public void placeFire(RandomSource random) {
+		for(int offX = -size / 2; offX <= size / 2; offX++) {
+			for(int offY = -size / 2; offY <= size / 2; offY++) {
+				for(int offZ = -size / 2; offZ <= size / 2; offZ++) {
+					if(random.nextFloat() < 0.2f && BaseFireBlock.canBePlacedAt(level, BlockPos.containing(new Vec3(posX, posY, posZ)).offset(offX, offY, offZ), Direction.DOWN)) {
+						level.setBlockAndUpdate(BlockPos.containing(new Vec3(posX, posY, posZ)).offset(offX, offY, offZ), BaseFireBlock.getState(level, BlockPos.containing(new Vec3(posX, posY, posZ)).offset(offX, offY, offZ)));
+					}
+				}
+			}
+		}
 	}
 	
 	/**
