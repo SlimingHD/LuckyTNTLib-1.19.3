@@ -377,7 +377,7 @@ public class ImprovedExplosion extends Explosion{
 								continue;
 							}
 							BlockState state = level.getBlockState(pos);
-							if(!state.isAir() && !state.canBeReplaced()) {
+							if(!state.isAir()) {
 								break;
 							}
 							lastPos = pos;
